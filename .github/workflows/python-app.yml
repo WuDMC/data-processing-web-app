@@ -17,6 +17,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:  
+      GCP_CREDS: ${{ secrets.GCP_CREDS }} 
+
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python 3.10
