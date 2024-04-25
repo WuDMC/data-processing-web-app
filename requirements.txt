@@ -1,8 +1,8 @@
-pylint
-pytest
-pytest-cov
-ipython
-black
-google
-google-cloud-vision
-Flask
+pylint==3.1.0
+pytest==8.1.1
+pytest-cov==5.0.0q
+ipython==8.23.0
+black==24.4.1
+google==3.0.0
+google-cloud-vision==3.7.2
+Flask==3.0.3
