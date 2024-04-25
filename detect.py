@@ -1,43 +1,56 @@
-def detect_faces_uri(uri):
-    """Detects faces in the file located in Google Cloud Storage or the web."""
-    from google.cloud import vision
+from google.cloud import vision
+from google.oauth2 import service_account
 
-    client = vision.ImageAnnotatorClient()
-    image = vision.Image()
-    image.source.image_uri = uri
 
-    response = client.face_detection(image=image)
-    faces = response.face_annotations
+class FaceDetector:
+    def __init__(self, credentials_info):
+        self.credentials_info = credentials_info
+        self.client = self.authorize()
 
-    # Names of likelihood from google.cloud.vision.enums
-    likelihood_name = (
-        "UNKNOWN",
-        "VERY_UNLIKELY",
-        "UNLIKELY",
-        "POSSIBLE",
-        "LIKELY",
-        "VERY_LIKELY",
-    )
-    print("Faces:")
-
-    for face in faces:
-        print(f"anger: {likelihood_name[face.anger_likelihood]}")
-        print(f"joy: {likelihood_name[face.joy_likelihood]}")
-        print(f"surprise: {likelihood_name[face.surprise_likelihood]}")
-
-        vertices = [
-            f"({vertex.x},{vertex.y})" for vertex in face.bounding_poly.vertices
-        ]
-
-        print("face bounds: {}".format(",".join(vertices)))
-
-    if response.error.message:
-        raise Exception(
-            "{}\nFor more info on error messages, check: "
-            "https://cloud.google.com/apis/design/errors".format(response.error.message)
+    def authorize(self):
+        credentials = service_account.Credentials.from_service_account_info(
+            self.credentials_info
         )
+        return vision.ImageAnnotatorClient(credentials=credentials)
 
-    if faces:
-        return "face detected"
-    else:
-        return "no faces detected"
+    def detect_faces_uri(self, uri):
+        """Detects faces in the file located in Google Cloud Storage or the web."""
+        image = vision.Image()
+        image.source.image_uri = uri
+
+        response = self.client.face_detection(image=image)
+        faces = response.face_annotations
+
+        likelihood_name = (
+            "UNKNOWN",
+            "VERY_UNLIKELY",
+            "UNLIKELY",
+            "POSSIBLE",
+            "LIKELY",
+            "VERY_LIKELY",
+        )
+        print("Faces:")
+
+        for face in faces:
+            print(f"anger: {likelihood_name[face.anger_likelihood]}")
+            print(f"joy: {likelihood_name[face.joy_likelihood]}")
+            print(f"surprise: {likelihood_name[face.surprise_likelihood]}")
+
+            vertices = [
+                f"({vertex.x},{vertex.y})" for vertex in face.bounding_poly.vertices
+            ]
+
+            print("face bounds: {}".format(",".join(vertices)))
+
+        if response.error.message:
+            raise Exception(
+                "{}\nFor more info on error messages, check: "
+                "https://cloud.google.com/apis/design/errors".format(
+                    response.error.message
+                )
+            )
+
+        if faces:
+            return f"{len(faces)} face detected"
+        else:
+            return "no faces detected"
