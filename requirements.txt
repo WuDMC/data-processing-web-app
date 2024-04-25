@@ -5,3 +5,4 @@ ipython
 black
 google
 google-cloud-vision
+Flask

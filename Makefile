@@ -3,7 +3,8 @@ install:
 		pip install -r requirements.txt
 		
 test:
-	python -m pytest -vv test_detect.py
+	python -m pytest -v tests/test_detect.py
+	python -m pytest -v tests/test_web.py
 
 format:
 	black *.py
