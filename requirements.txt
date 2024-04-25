@@ -1,0 +1,7 @@
+pylint
+pytest
+pytest-cov
+ipython
+black
+google
+google-cloud-vision
