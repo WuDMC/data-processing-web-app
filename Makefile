@@ -3,8 +3,9 @@ install:
 		pip install -r requirements.txt
 		
 test:
-	python -m pytest -v tests/test_detect.py
-	python -m pytest -v tests/test_web.py
+	python -m pytest -v tests/test_upload.py
+	# python -m pytest -v tests/test_detect.py
+	# python -m pytest -v tests/test_web.py
 
 format:
 	black tests

@@ -53,7 +53,6 @@ class FaceDetector:
             return "no faces detected"
 
     def detect_faces_uri(self, uri):
-        """Detects faces in the file located in Google Cloud Storage or the web."""
         image = vision.Image()
         image.source.image_uri = uri
         result = self.detect_img(image)
