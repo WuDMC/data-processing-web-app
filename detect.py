@@ -1,5 +1,6 @@
 from google.cloud import vision
 from google.oauth2 import service_account
+import base64
 
 
 class FaceDetector:
@@ -13,11 +14,7 @@ class FaceDetector:
         )
         return vision.ImageAnnotatorClient(credentials=credentials)
 
-    def detect_faces_uri(self, uri):
-        """Detects faces in the file located in Google Cloud Storage or the web."""
-        image = vision.Image()
-        image.source.image_uri = uri
-
+    def detect_img(self, image):
         response = self.client.face_detection(image=image)
         faces = response.face_annotations
 
@@ -54,3 +51,15 @@ class FaceDetector:
             return f"{len(faces)} face detected"
         else:
             return "no faces detected"
+
+    def detect_faces_uri(self, uri):
+        """Detects faces in the file located in Google Cloud Storage or the web."""
+        image = vision.Image()
+        image.source.image_uri = uri
+        result = self.detect_img(image)
+        return result
+
+    def detect_faces_base64(self, image_base64):
+        image = vision.Image(content=image_base64)
+        result = self.detect_img(image)
+        return result
