@@ -28,29 +28,41 @@ def face_detector():
 
 
 def test_face_img_positive_response(face_detector):
-    assert face_detector.detect_faces_uri(FACE_IMAGE_URL) == "1 face detected"
+    result = face_detector.detect_faces_uri(FACE_IMAGE_URL)
+    result_json = json.loads(result)
+    assert result_json["result"] is True
+    assert result_json["faces_count"] == 1
 
 
 def test_face_img64_positive_response(face_detector):
     response = requests.get(FACE_IMAGE_URL)
     response.raise_for_status()
     content_base64 = base64.b64encode(response.content).decode("utf-8")
-    assert face_detector.detect_faces_base64(content_base64) == "1 face detected"
+    result = face_detector.detect_faces_base64(content_base64)
+    result_json = json.loads(result)
+    assert result_json["result"] is True
+    assert result_json["faces_count"] == 1
 
 
 def test_car_img_negative_response(face_detector):
-    assert face_detector.detect_faces_uri(CAR_IMAGE_URL) == "no faces detected"
+    result = face_detector.detect_faces_uri(CAR_IMAGE_URL)
+    result_json = json.loads(result)
+    assert result_json["result"] is False
+    assert result_json["faces_count"] == 0
 
 
 def test_car_img64_negative_response(face_detector):
     response = requests.get(CAR_IMAGE_URL)
     response.raise_for_status()
     content_base64 = base64.b64encode(response.content).decode("utf-8")
-    assert face_detector.detect_faces_base64(content_base64) == "no faces detected"
+    result = face_detector.detect_faces_base64(content_base64)
+    result_json = json.loads(result)
+    assert result_json["result"] is False
+    assert result_json["faces_count"] == 0
 
 
 def test_invalid_uri_exception_response(face_detector):
     invalid_uri = "invalid_uri"
-    with pytest.raises(Exception) as e:
-        face_detector.detect_faces_uri(invalid_uri)
-    assert "Unsupported URI protocol specified" in str(e.value)
+    result = face_detector.detect_faces_uri(invalid_uri)
+    result_json = json.loads(result)
+    assert result_json["error"] == "Unsupported URI protocol specified: invalid_uri."

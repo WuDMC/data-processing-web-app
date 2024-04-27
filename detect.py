@@ -1,6 +1,7 @@
 from google.cloud import vision
 from google.oauth2 import service_account
 import base64
+import json
 
 
 class FaceDetector:
@@ -16,7 +17,9 @@ class FaceDetector:
 
     def detect_img(self, image):
         response = self.client.face_detection(image=image)
-        faces = response.face_annotations
+        faces = (
+            response.face_annotations if response.face_annotations is not None else []
+        )
 
         likelihood_name = (
             "UNKNOWN",
@@ -26,31 +29,27 @@ class FaceDetector:
             "LIKELY",
             "VERY_LIKELY",
         )
-        print("Faces:")
+
+        result = {
+            "result": bool(faces),
+            "faces_count": len(faces),
+            "info": [],
+            "error": response.error.message if response.error.message else None,
+        }
 
         for face in faces:
-            print(f"anger: {likelihood_name[face.anger_likelihood]}")
-            print(f"joy: {likelihood_name[face.joy_likelihood]}")
-            print(f"surprise: {likelihood_name[face.surprise_likelihood]}")
+            face_info = {
+                "anger": likelihood_name[face.anger_likelihood],
+                "joy": likelihood_name[face.joy_likelihood],
+                "surprise": likelihood_name[face.surprise_likelihood],
+                "face_bounds": [
+                    {"x": vertex.x, "y": vertex.y}
+                    for vertex in face.bounding_poly.vertices
+                ],
+            }
+            result["info"].append(face_info)
 
-            vertices = [
-                f"({vertex.x},{vertex.y})" for vertex in face.bounding_poly.vertices
-            ]
-
-            print("face bounds: {}".format(",".join(vertices)))
-
-        if response.error.message:
-            raise Exception(
-                "{}\nFor more info on error messages, check: "
-                "https://cloud.google.com/apis/design/errors".format(
-                    response.error.message
-                )
-            )
-
-        if faces:
-            return f"{len(faces)} face detected"
-        else:
-            return "no faces detected"
+        return json.dumps(result)
 
     def detect_faces_uri(self, uri):
         image = vision.Image()

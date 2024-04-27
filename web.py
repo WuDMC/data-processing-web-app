@@ -28,7 +28,12 @@ def detect_faces():
         try:
             if image_64:
                 face_detection_result = face_detector.detect_faces_base64(image_64)
-                upload_result = uploader.upload_file_with_metadata(metadata, image_64)
+                result_json = json.loads(face_detection_result)
+                upload_result = (
+                    uploader.upload_file_with_metadata(metadata, image_64)
+                    if result_json["result"]
+                    else "no faces = no upload, sorry bro"
+                )
             else:
                 face_detection_result = face_detector.detect_faces_uri(image_url)
                 upload_result = "cant upload url, please use base64 file format"
@@ -47,8 +52,7 @@ def detect_faces():
 
 @app.route("/detect_faces", methods=["GET"])
 def curl_example():
-    curl_command = "curl -X POST \\\n  http://127.0.0.1:8080/detect_faces \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"image_url\": \"YOUR_IMAGE_URL_HERE\"}'"
-    return jsonify({"curl_example": curl_command})
+    return jsonify({"error": "YOU SHALL NO PASS! Use POST request"})
 
 
 if __name__ == "__main__":
