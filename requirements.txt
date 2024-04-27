@@ -7,3 +7,4 @@ google==3.0.0
 google-cloud-vision==3.7.2
 Flask==3.0.3
 google-api-python-client
+pydub

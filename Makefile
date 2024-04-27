@@ -7,6 +7,7 @@ test:
 	python -m pytest -v -s --show-capture=all tests/test_metadata.py
 	python -m pytest -v -s --show-capture=all tests/test_detect.py
 	python -m pytest -v -s --show-capture=all tests/test_web.py
+	python -m pytest -v -s --show-capture=all tests/test_audio.py
 
 format:
 	black tests
