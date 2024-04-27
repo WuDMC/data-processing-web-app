@@ -38,22 +38,23 @@ def delete_file(file_path):
 def process_audio(url):
     file_content = download_file(url)
     if file_content:
-        # Extract filename from the URL
-        file_name = url.split("/")[-1]
-        # Save the downloaded file
-        with open(file_name, "wb") as f:
-            f.write(file_content)
+        # # Extract filename from the URL
+        # file_name = url.split("/")[-1]
+        # # Save the downloaded file
+        # with open(file_name, "wb") as f:
+        #     f.write(file_content)
 
-        # Convert to WAV
-        wav_file = "output.wav"
-        convert_to_wav(file_content, wav_file)  # Pass file content instead of filename
+        # # Convert to WAV
+        # wav_file = "output.wav"
+        # convert_to_wav(file_content, wav_file)  # Pass file content instead of filename
 
-        # Convert to Base64
-        base64_string = convert_to_base64(wav_file)
+        # # Convert to Base64
+        # base64_string = convert_to_base64(wav_file)
+        base64_string = base64.b64encode(file_content).decode("utf-8")
 
         # Delete temporary files
-        delete_file(file_name)
-        delete_file(wav_file)
+        # delete_file(file_name)
+        # delete_file(wav_file)
 
         return base64_string
     else:
