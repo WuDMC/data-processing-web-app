@@ -9,6 +9,13 @@ import base64
 FACE_IMAGE_URL = "https://img.freepik.com/free-photo/front-view-beautiful-woman-portrait_23-2149479366.jpg?w=1380&t=st=1714047423~exp=1714048023~hmac=fe68954343cf3880be040c9766746313a5295c0d29c94a85ba310b9b0b79bb85"
 CAR_IMAGE_URL = "https://imgd.aeplcdn.com/1056x594/n/cw/ec/132427/taisor-exterior-right-front-three-quarter-2.png?isig=0&q=80&wm=1"
 
+# Define test data for folders
+FOLDERS_DATA = [
+    ("media_from_tg", "1VG4He-WCXn0K3tEF_13hyIgD5qFMTGHp"),
+    ("test", "1x3YWOQLLpJz4Niohnb38jrBiofAwx96G"),
+    ("220428984", "1dK6S9wwtaZpNa6zweYylPjZCRqOD94aR"),
+]
+
 
 @pytest.fixture(scope="module", autouse=True)
 def uploader():
@@ -27,20 +34,31 @@ def uploader():
     return uploader
 
 
-def test_check_folder_name(uploader):
-    folder_id = "1tSjqUMBH5SfGw9lVe9nFJT0wOC2w8Y4w"
-    expected_name = "media_from_tg"
+@pytest.mark.parametrize("expected_name, expected_folder_id", FOLDERS_DATA)
+def test_folder_creation(uploader, expected_name, expected_folder_id):
+    new_folder_folder_id = uploader.create_folder(expected_name, parent_folder_id=None)
+    assert new_folder_folder_id is not None, "Failed to create folder"
+    assert (
+        new_folder_folder_id == expected_folder_id
+    ), "Created ID doesn't match expected ID, update it please"
 
-    # Получение информации о папке
-    folder_info = uploader.get_file_info(folder_id)
+
+@pytest.mark.parametrize("expected_name, expected_folder_id", FOLDERS_DATA)
+def test_folder_info_retrieval(uploader, expected_name, expected_folder_id):
+    folder_info = uploader.get_file_info(expected_folder_id)
     assert (
         folder_info is not None
-    ), f"Failed to retrieve folder info for folder ID: {folder_id}"
-
-    # Проверка соответствия имени папки ожидаемому имени
+    ), f"Failed to retrieve folder info for folder ID: {expected_folder_id}"
     assert (
         folder_info.get("name") == expected_name
-    ), f"Folder name does not match expected name"
+    ), f"Folder name does not match expected name for folder ID: {expected_folder_id}"
+
+
+@pytest.mark.parametrize("expected_name, expected_folder_id", FOLDERS_DATA)
+def test_folder_permissions(uploader, expected_name, expected_folder_id):
+    assert uploader.check_folder_permissions(
+        expected_folder_id
+    ), f"Permissions check failed for folder ID: {expected_folder_id}"
 
 
 def test_upload_file(uploader):
@@ -51,7 +69,7 @@ def test_upload_file(uploader):
     base64file = base64.b64encode(file_data).decode("utf-8")
 
     # Загрузка файла
-    file_id = uploader.upload_file(metadata, base64file)
+    file_id = uploader.upload_file_with_metadata(metadata, base64file)
 
     # Проверка успешности загрузки файла
     assert file_id is not None, "Failed to upload file"
