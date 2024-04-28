@@ -164,3 +164,4 @@ class Uploader:
 
         except Exception as error:
             print(f"An error occurred while uploading file with metadata: {error}")
+            return None
