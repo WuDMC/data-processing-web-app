@@ -1,12 +1,6 @@
 install:
 	pip install --upgrade pip &&\
-	pip install -r requirements.txt &&\
-	if ! which ffmpeg &> /dev/null; then \
-		echo "ffmpeg not found. Installing..."; \
-		sudo apt update && sudo apt install -y ffmpeg; \
-	else \
-		echo "ffmpeg found."; \
-	fi
+	pip install -r requirements.txt
 
 test:
 	python -m pytest -v -s --show-capture=all tests/test_upload.py
