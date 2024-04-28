@@ -1,6 +1,6 @@
 FROM python:3.10
 
-RUN apt-get update && apt-get install -y --allow-unauthenticated ffmpeg
+RUN apt-get update && apt-get install -y --allow-unauthenticated ffmpeg sudo
 
 WORKDIR /app
 
