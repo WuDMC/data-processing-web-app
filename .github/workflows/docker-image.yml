@@ -12,7 +12,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      GCP_CREDS: ${{ secrets.GCP_CREDS }}
+
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag web-app:$(date +%s)
+    - name: Run container
+      run: docker run -d -e GCP_CREDS="$GCP_CREDS" -p 8080:8080 web-app
+    - name: Execute make test inside container
+      run: docker exec -it web-app bash -c "make test"
