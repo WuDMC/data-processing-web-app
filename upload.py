@@ -153,14 +153,14 @@ class Uploader:
             existing_files = self.find_files_by_name(file_name, folder_id)
             if existing_files:
                 print(f"File with name '{file_name}' already exists in the folder.")
-                return existing_files
+                return f"File with name '{file_name}' already exists in the folder, id: {existing_files}"
             file_id = self.upload_file(file_name, mime_type, base64_file, folder_id)
             if file_id:
                 print(
                     f'File "{file_name}" uploaded to folder "{folder_name}" with ID: {file_id}'
                 )
                 print(f'URL: "{self.get_folder_url(PARENT_FOLDER_ID)}"')
-                return f"{file_id} uloaded successfully to {get_folder_url(folder_id)} with filename {file_name}"
+                return f"{file_id} uploaded successfully to {self.get_folder_url(folder_id)} with filename {file_name}"
 
         except Exception as error:
             print(f"An error occurred while uploading file with metadata: {error}")

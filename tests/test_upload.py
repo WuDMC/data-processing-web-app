@@ -63,13 +63,13 @@ def test_folder_permissions(uploader, expected_name, expected_folder_id):
 
 def test_upload_file(uploader):
     metadata = """
-    {"channel_chat_created": false, "delete_chat_photo": false, "document": {"file_name": "8ebd7672-9e80-4a5a-a8ce-93ca521d7b7b.jpeg", "mime_type": "image/jpeg", "thumbnail": {"height": 160, "width": 320, "file_id": "AAMCAgADGQEAAx1mK2s8k_uhCnMuDtbFRFgLQYTePAAC5kwAAmgiYUlLmdHpIFLscQEAB20AAzQE", "file_size": 9462, "file_unique_id": "AQAD5kwAAmgiYUly"}, "file_id": "BQACAgIAAxkBAAMdZitrPJP7oQpzLg7WxURYC0GE3jwAAuZMAAJoImFJS5nR6SBS7HE0BA", "file_size": 61100, "file_unique_id": "AgAD5kwAAmgiYUk", "thumb": {"file_id": "AAMCAgADGQEAAx1mK2s8k_uhCnMuDtbFRFgLQYTePAAC5kwAAmgiYUlLmdHpIFLscQEAB20AAzQE", "file_unique_id": "AQAD5kwAAmgiYUly", "file_size": 9462, "width": 320, "height": 160}}, "group_chat_created": false, "supergroup_chat_created": false, "chat": {"first_name": "D", "id": 220428984, "type": "private", "username": "WuDMC"}, "date": 1714121532, "message_id": 29, "from": {"first_name": "D", "id": 220428984, "is_bot": false, "is_premium": true, "language_code": "en", "username": "WuDMC"}}
+    {"channel_chat_created": false, "delete_chat_photo": false, "document": {"file_name": "8ebd7672-9e80-4a5a-a8ce-93ca521d7b7b.jpeg", "mime_type": "image/jpeg", "thumbnail": {"height": 160, "width": 320, "file_id": "AAMCAgADGQEAAx1mK2s8k_uhCnMuDtbFRFgLQYTePAAC5kwAAmgiYUlLmdHpIFLscQEAB20AAzQE", "file_size": 9462, "file_unique_id": "TEST_FACE"}, "file_id": "BQACAgIAAxkBAAMdZitrPJP7oQpzLg7WxURYC0GE3jwAAuZMAAJoImFJS5nR6SBS7HE0BA", "file_size": 61100, "file_unique_id": "TEST_FACE", "thumb": {"file_id": "AAMCAgADGQEAAx1mK2s8k_uhCnMuDtbFRFgLQYTePAAC5kwAAmgiYUlLmdHpIFLscQEAB20AAzQE", "file_unique_id": "AQAD5kwAAmgiYUly", "file_size": 9462, "width": 320, "height": 160}}, "group_chat_created": false, "supergroup_chat_created": false, "chat": {"first_name": "D", "id": 220428984, "type": "private", "username": "WuDMC"}, "date": 1714121532, "message_id": 29, "from": {"first_name": "D", "id": 220428984, "is_bot": false, "is_premium": true, "language_code": "en", "username": "WuDMC"}}
     """
-    file_data = requests.get(CAR_IMAGE_URL).content
+    file_data = requests.get(FACE_IMAGE_URL).content
     base64file = base64.b64encode(file_data).decode("utf-8")
 
     # Загрузка файла
-    file_id = uploader.upload_file_with_metadata(metadata, base64file)
+    result = uploader.upload_file_with_metadata(metadata, base64file)
 
     # Проверка успешности загрузки файла
-    assert file_id is not None, "Failed to upload file"
+    assert result is not None and 'TEST_FACE' in  result, "Failed to upload file"
