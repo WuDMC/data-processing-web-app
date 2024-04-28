@@ -3,7 +3,7 @@ install:
 	pip install -r requirements.txt &&\
 	if ! which ffmpeg &> /dev/null; then \
 		echo "ffmpeg not found. Installing..."; \
-		apt update && apt install -y ffmpeg; \
+		sudo apt update && sudo apt install -y ffmpeg; \
 	else \
 		echo "ffmpeg found."; \
 	fi
