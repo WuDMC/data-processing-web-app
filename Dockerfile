@@ -9,7 +9,7 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
 
 COPY --from=ffmpeg /ffmpeg /usr/local/bin/
 
-RUN apt-get update && apt-get install -y make
+RUN apt-get update && apt-get install -y make sudo
 
 WORKDIR /app
 
