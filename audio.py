@@ -23,9 +23,11 @@ def convert_to_wav(file_content, file_name, output_file):
     # Команда ffmpeg для конвертации файла в WAV с частотой дискретизации 16 кГц
     ffmpeg_command = [
         "ffmpeg",
-        "-i", temp_input_file,
-        "-ar", "16000",  # Частота дискретизации 16 кГц
-        output_file
+        "-i",
+        temp_input_file,
+        "-ar",
+        "16000",  # Частота дискретизации 16 кГц
+        output_file,
     ]
 
     # Выполняем команду ffmpeg
@@ -55,9 +57,9 @@ def process_audio(url):
         file_name = url.split("/")[-1]
         with open(file_name, "wb") as f:
             f.write(file_content)
-            
+
         wav_file = f"{file_name}.wav"
-        convert_to_wav(file_content, file_name, wav_file)  
+        convert_to_wav(file_content, file_name, wav_file)
         # Convert to Base64
         base64_string = convert_to_base64(wav_file)
         base64_string = base64.b64encode(file_content).decode("utf-8")

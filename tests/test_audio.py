@@ -14,4 +14,3 @@ def test_process_audio(url):
     assert base64_string.startswith(
         "SUQzBAAAAA"
     ), "The Base64 string does not start with 'SUQzBAAAAA'"
-
