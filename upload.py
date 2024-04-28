@@ -160,7 +160,7 @@ class Uploader:
                     f'File "{file_name}" uploaded to folder "{folder_name}" with ID: {file_id}'
                 )
                 print(f'URL: "{self.get_folder_url(PARENT_FOLDER_ID)}"')
-                return file_id
+                return f"{file_id} uloaded successfully to {get_folder_url(folder_id)} with filename {file_name}"
 
         except Exception as error:
             print(f"An error occurred while uploading file with metadata: {error}")

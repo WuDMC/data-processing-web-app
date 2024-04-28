@@ -2,12 +2,11 @@ install:
 	pip install --upgrade pip &&\
 	pip install -r requirements.txt &&\
 	    if ! which ffmpeg &> /dev/null; then \
-		echo "ffmpeg not found. Installing..."; \
-		apt update && apt install -y ffmpeg; \
+			echo "ffmpeg not found. Installing..."; \
+			apt install -y ffmpeg; \
 	    else \
-		echo "ffmpeg found."; \
+			echo "ffmpeg found."; \
 	    fi
-		
 test:
 	python -m pytest -v -s --show-capture=all tests/test_upload.py
 	python -m pytest -v -s --show-capture=all tests/test_metadata.py
