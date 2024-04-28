@@ -14,13 +14,19 @@ jobs:
 
     env:
       GCP_CREDS: ${{ secrets.GCP_CREDS }}
-      IMAGE_TAG: ${{ format('{0}-{1}', 'web-app', github.run_number) }}
 
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{ env.IMAGE_TAG }}
+      run: docker build . -t web-app
     - name: Run container
-      run: docker run -d -e GCP_CREDS="$GCP_CREDS" -p 8080:8080 ${{ env.IMAGE_TAG }}
+      run: docker run --name app-container -d -e GCP_CREDS="$GCP_CREDS" -p 8080:8080 web-app
     - name: Execute make test inside container
-      run: docker exec -it ${{ env.IMAGE_TAG }} bash -c "make test"
+      run: docker exec -it app-container bash -c "make test"
+    - name: Stop
+      run: docker stop app-container
+    - name: Remove container
+      run: docker rm app-container
+    - name: Remove Image
+      run: doker rmi web-app
+      
