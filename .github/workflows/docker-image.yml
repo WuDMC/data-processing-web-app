@@ -28,5 +28,5 @@ jobs:
     - name: Remove container
       run: docker rm app-container
     - name: Remove Image
-      run: doker rmi web-app
+      run: docker rmi -f web-app
       
