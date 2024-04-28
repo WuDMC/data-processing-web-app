@@ -22,7 +22,7 @@ jobs:
     - name: Run container
       run: docker run --name app-container -d -e GCP_CREDS="$GCP_CREDS" -p 8080:8080 web-app
     - name: Execute make test inside container
-      run: docker exec -it app-container bash -c "make test"
+      run: docker exec app-container bash -c "make test"
     - name: Stop
       run: docker stop app-container
     - name: Remove container
