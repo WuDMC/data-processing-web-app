@@ -85,7 +85,7 @@ def save_audio():
 
 @app.route("/save_audio", methods=["GET"])
 def save_audio_not():
-    return jsonify({"error": "YOU SHALL NO PASS! Use POST request babe!!"})
+    return jsonify({"error": "YOU SHALL NO PASS! Use POST request babe!"})
 
 @app.route("/pip", methods=["GET"])
 def pip():
