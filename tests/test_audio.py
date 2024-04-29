@@ -12,5 +12,5 @@ def test_process_audio(url):
     assert isinstance(base64_string, str), "The return value is not a string"
     assert len(base64_string) > 0, "The Base64 string received is empty"
     assert base64_string.startswith(
-        "SUQzBAAAAA"
-    ), "The Base64 string does not start with 'SUQzBAAAAA'"
+        "UklGRgJd"
+    ), "The Base64 string does not start with 'UklGRgJd'"
