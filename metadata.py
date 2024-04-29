@@ -5,10 +5,8 @@ import json
 class MetadataParser:
     def parse_metadata(self, metadata):
         try:
-            # Преобразование строки metadata в объект Message
             message = json.loads(metadata)
-
-            # Получение данных файла из объекта Message
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
             if "document" in message:
                 mime_type = message["document"]["mime_type"]
                 file_name = f"doc_{mime_type}_{message['document']['file_unique_id']}"
@@ -19,14 +17,15 @@ class MetadataParser:
                 photo = message["photo"][0]
                 file_name = f"photo_{photo['file_unique_id']}.jpeg"
                 mime_type = "image/jpeg"
+            elif "audio" in message:
+                mime_type = message["audio"]["mime_type"]
+                file_name = f'audio_{mime_type}_{message["audio"]["file_name"]}.wav'
             else:
-                raise ValueError("incorrect metadata")
-
-            user_id = str(message["from"]["id"])
-
-            print(f"file_name: {file_name} mime_type:{mime_type}")
+                file_name = f"unknown_file_{timestamp}"
+                mime_type = "text/plain"
+            user_id = str(message.get("from", {}).get("id", "Unknown"))
             return file_name, mime_type, user_id
 
         except Exception as error:
             print(f"An error occurred while parsing the metadata: {error}")
-            return None, None
+            return None, None, None
