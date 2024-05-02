@@ -23,6 +23,11 @@ def test_index(app, client):
     assert result.status_code == 200
     assert {"Hello": "Mitek"} == json.loads(result.get_data(as_text=True))
 
+def test_ffmpeg(app, client):
+    result = client.get("/ffmpeg_installed")
+    assert result.status_code == 200
+    assert {"message": "FFmpeg is installed"} == json.loads(result.get_data(as_text=True))
+
 
 def test_detect_faces(client):
     result = client.post("/detect_faces", json=TEST_BODY)

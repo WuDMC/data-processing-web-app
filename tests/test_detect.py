@@ -6,8 +6,8 @@ import requests
 import base64
 
 # Image URLs
-FACE_IMAGE_URL = "https://img.freepik.com/free-photo/front-view-beautiful-woman-portrait_23-2149479366.jpg?w=1380&t=st=1714047423~exp=1714048023~hmac=fe68954343cf3880be040c9766746313a5295c0d29c94a85ba310b9b0b79bb85"
-CAR_IMAGE_URL = "https://imgd.aeplcdn.com/1056x594/n/cw/ec/132427/taisor-exterior-right-front-three-quarter-2.png?isig=0&q=80&wm=1"
+FACE_IMAGE_URL = "https://img.freepik.com/free-photo/front-view-beautiful-woman-portrait_23-2149479366.jpg?w=300&t=st=1714047423~exp=1714048023~hmac=fe68954343cf3880be040c9766746313a5295c0d29c94a85ba310b9b0b79bb85"
+CAR_IMAGE_URL = "https://freeiconshop.com/wp-content/uploads/edd/car-flat.png"
 
 
 @pytest.fixture(scope="module", autouse=True)

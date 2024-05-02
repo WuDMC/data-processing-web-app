@@ -2,7 +2,6 @@ from flask import Flask, jsonify, request
 from detect import FaceDetector
 from upload import Uploader
 from audio import process_audio
-import pkg_resources
 import subprocess
 
 import os
@@ -87,10 +86,6 @@ def save_audio():
 def save_audio_not():
     return jsonify({"error": "YOU SHALL NO PASS! Use POST request babe!"})
 
-@app.route("/pip", methods=["GET"])
-def pip():
-    installed_packages = [str(package) for package in pkg_resources.working_set]
-    return jsonify(installed_packages)
 
 @app.route("/ffmpeg_installed", methods=["GET"])
 def ffmpeg_installed():
@@ -99,6 +94,7 @@ def ffmpeg_installed():
         return jsonify({"message": "FFmpeg is installed"})
     except subprocess.CalledProcessError:
         return jsonify({"message": "FFmpeg is not installed"})
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)

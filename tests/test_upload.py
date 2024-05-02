@@ -61,7 +61,7 @@ def test_folder_permissions(uploader, expected_name, expected_folder_id):
     ), f"Permissions check failed for folder ID: {expected_folder_id}"
 
 
-def test_upload_file(uploader):
+def test_upload_photo(uploader):
     metadata = """
     {"channel_chat_created": false, "delete_chat_photo": false, "document": {"file_name": "8ebd7672-9e80-4a5a-a8ce-93ca521d7b7b.jpeg", "mime_type": "image/jpeg", "thumbnail": {"height": 160, "width": 320, "file_id": "AAMCAgADGQEAAx1mK2s8k_uhCnMuDtbFRFgLQYTePAAC5kwAAmgiYUlLmdHpIFLscQEAB20AAzQE", "file_size": 9462, "file_unique_id": "TEST_FACE"}, "file_id": "BQACAgIAAxkBAAMdZitrPJP7oQpzLg7WxURYC0GE3jwAAuZMAAJoImFJS5nR6SBS7HE0BA", "file_size": 61100, "file_unique_id": "TEST_FACE", "thumb": {"file_id": "AAMCAgADGQEAAx1mK2s8k_uhCnMuDtbFRFgLQYTePAAC5kwAAmgiYUlLmdHpIFLscQEAB20AAzQE", "file_unique_id": "AQAD5kwAAmgiYUly", "file_size": 9462, "width": 320, "height": 160}}, "group_chat_created": false, "supergroup_chat_created": false, "chat": {"first_name": "D", "id": 220428984, "type": "private", "username": "WuDMC"}, "date": 1714121532, "message_id": 29, "from": {"first_name": "D", "id": 220428984, "is_bot": false, "is_premium": true, "language_code": "en", "username": "WuDMC"}}
     """
@@ -72,4 +72,18 @@ def test_upload_file(uploader):
     result = uploader.upload_file_with_metadata(metadata, base64file)
 
     # Проверка успешности загрузки файла
-    assert result is not None and 'TEST_FACE' in  result, "Failed to upload file"
+    assert result is not None and "TEST_FACE" in result, "Failed to upload file"
+
+
+def test_upload_audio(uploader):
+    metadata = """
+	{"channel_chat_created": false, "delete_chat_photo": false, "group_chat_created": false, "supergroup_chat_created": false, "voice": {"duration": 1, "mime_type": "audio/mp3", "file_id": "AwACAgIAAxkBAAIBk2YugCUfgTWhEZbTfKWgHOVG5tmLAAI9UAAC4Ux5SQz8_s1HmfRWNAQ", "file_size": 507, "file_unique_id": "testmp3"}, "chat": {"first_name": "D", "id": 220428984, "type": "private", "username": "WuDMC"}, "date": 1714323494, "message_id": 403, "from": {"first_name": "D", "id": 220428984, "is_bot": false, "is_premium": true, "language_code": "en", "username": "WuDMC"}}
+    """
+    file_data = requests.get("https://download.samplelib.com/mp3/sample-9s.mp3").content
+    base64file = base64.b64encode(file_data).decode("utf-8")
+
+    # Загрузка файла
+    result = uploader.upload_file_with_metadata(metadata, base64file)
+
+    # Проверка успешности загрузки файла
+    assert result is not None and "testmp3" in result, "Failed to upload file"

@@ -53,7 +53,6 @@ class Uploader:
         self, file_name, mime_type, base64file, parent_folder_id=PARENT_FOLDER_ID
     ):
         try:
-            # file_name, mime_type = self.metadata_parser.parse_metadata(metadata)
             file_data_decoded = base64.b64decode(base64file)
             media = MediaIoBaseUpload(io.BytesIO(file_data_decoded), mimetype=mime_type)
             file_metadata = {"name": file_name, "parents": [parent_folder_id]}
@@ -91,7 +90,7 @@ class Uploader:
             self.service.files().delete(fileId=file_id).execute()
             print(f"File with ID '{file_id}' has been deleted")
         except Exception as error:
-            print(f"An error occurred while deleting the file: {error}")
+            return f"An error occurred while deleting the file: {error}"
 
     def check_folder_permissions(self, folder_id):
         try:
@@ -163,5 +162,6 @@ class Uploader:
                 return f"{file_id} uploaded successfully to {self.get_folder_url(folder_id)} with filename {file_name}"
 
         except Exception as error:
-            print(f"An error occurred while uploading file with metadata: {error}")
-            return None
+            error_msg = f"An error occurred while uploading file with metadata: {error}"
+            print(error_msg)
+            return error_msg

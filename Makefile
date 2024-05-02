@@ -1,7 +1,6 @@
 install:
 	pip install --upgrade pip &&\
-	pip install -r requirements.txt &&\
-	sudo apt-get install -y ffmpeg
+	pip install -r requirements.txt
 
 test:
 	python -m pytest -v -s --show-capture=all tests/test_upload.py

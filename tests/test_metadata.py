@@ -29,3 +29,19 @@ def test_parse_metadata_photo(parser):
     assert "AQADGNwxG1xbaEl4" in file_name
     assert mime_type == "image/jpeg"
     assert folder_name == "220428984"
+
+
+def test_parse_metadata_mp3(parser):
+    metadata = '{"audio": {"duration": 9, "file_name": "sample-9s.mp3", "mime_type": "audio/mpeg", "file_id": "CQACAgIAAxkBAAICHGYv4xO9XamKY4kD7w-QbKhYmfSbAAJ7SAACplCASbu6SgiGnOMONAQ", "file_size": 154062, "file_unique_id": "AgADe0gAAqZQgEk"}, "channel_chat_created": false, "delete_chat_photo": false, "group_chat_created": false, "supergroup_chat_created": false, "chat": {"first_name": "D", "id": 220428984, "type": "private", "username": "WuDMC"}, "date": 1714414355, "message_id": 540, "from": {"first_name": "D", "id": 220428984, "is_bot": false, "is_premium": true, "language_code": "en", "username": "WuDMC"}}'
+    file_name, mime_type, folder_name = parser.parse_metadata(metadata)
+    assert "sample-9s.mp3" in file_name
+    assert mime_type == "audio/mpeg"
+    assert folder_name == "220428984"
+
+
+def test_parse_metadata_unknown(parser):
+    metadata = '{"foo": "bar"}'
+    file_name, mime_type, folder_name = parser.parse_metadata(metadata)
+    assert "unknown_file_" in file_name
+    assert mime_type == "text/plain"
+    assert folder_name == "Unknown"
